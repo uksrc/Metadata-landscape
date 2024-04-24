@@ -1,6 +1,7 @@
-\section{Metadata Usecases and Requirements}\label{sec:reqs}
+\section{Metadata Usecases}\label{sec:reqs}
 
-Summary of the results from the survey. 
+This section describes use cases for metadata within the SKA.
+The sources for these metadata include a "literature review of available SKA documents" and a survey/interview with the leaders for each of the demonstrator cases. 
 
 \subsection{SRCNet Use Cases}
 
@@ -26,18 +27,22 @@ The following UCs are all of those contained within the UC document which will h
     \item {\bf UC\_SRC\_14} - To Monitor and understand the popularity of data products or data collections so that I can ensure that appropriate overall QoS is being provided to popular (or unpopular) data products/collections
 \end{itemize}
 
+ 
+
 Add a short description on the specifics on the metadata needed, group by the required information and include all UCs which require it. 
 Collate this information in a matrix later on. 
 
-\subsection{Demonstrator Cases of the SKA}
 
+\subsection{Demonstrator Cases of the SKA - survey}
 
+\subsubsection{From Discussions}
+\begin{itemize}[label={}]
+    \item {\bf UC 1} - Storage vs Re-computation. The determination of whether a piece of data should be stored or re-computed/re-downloaded. Requires information on the size of the data, time taken to compute/download, number of times it has been accessed, available resources (compute and storage).
+    \item {\bf UC 2} - Prediction of Pipeline Performance. The prediction of required resources (e.g. compute, memory, time, quality, etc.) to execute a pipeline, based upon the pipeline components and input data scale. Requires identifiers for the different pipeline components (fucntions, modules, etc.), metadata on memory consumption and time for individual components, versioning information, data source metadata for scaling, quality metrics. 
+    \item {\bf UC 3} - Recommendation of Components. Requires description on the purpose of components, data flow to recommend next steps based upon previous, parameter key/values if recommendation on that level is required, data source metadata to recommend steps with appropriate scaling etc., quality metrics.  
+    \item {\bf UC 4} - Retrieve all Data Products from a given Source. Data flow, data source metadata, data product metadata, identifiers on all aforementioned metadata. 
+    \item {\bf UC 5} - Anomaly detection. Determination of: the difference between two pipeline executions; the source of a fault within a pipeline execution; or unusual processing/parameter values within a pipeline execution.
+    \item {\bf UC 6} - Re-computation. The ability to re-execute a pipeline from the provenance.
+    \item {\bf UC 7} - Retrieve all data products from person/organisation.
+\end{itemize}
 
-\newcommand{\man}[1][]{\(\CIRCLE_{#1}\)}     % mandatory
-\newcommand{\opt}[1][]{\(\LEFTcircle_{#1}\)} % optional
-\newcommand{\non}{\Circle}                   % not needed
-
-Table of requirements listed by the proposal document surrounding the demonstrator cases. 
-Add introduction to demos, links, refine table, etc.
-
-\input{tables/requirement_DC_table}

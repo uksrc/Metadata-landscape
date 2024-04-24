@@ -1,9 +1,32 @@
-\section{Existing Metadata Stanards and Systems}\label{sec:exist_mod}
+\section{Existing Metadata Standards and Systems}\label{sec:exist_mod}
 
-What work CADC (SRCNet) did so far with regards to CAOM
+\subsection{SKA Provenance and Metadata Implementations}
 
-Evaluate IVOA Protocol 
+\subsubsection{SDP Data Product Metadata Generator}
 
-LSST DM
+The SDP Data Product Metadata is a current implementation for collection of data source metadata\footnote{\url{https://gitlab.com/ska-telescope/sdp/ska-sdp-dataproduct-metadata}}.
+The information collected includes:
 
-Others
+\begin{itemize}
+    \item Execution block ID
+    \item The context of the execution block provided by the Observation Execution Tool (OET)
+    \item The configuration of the processing block used to generate the data products
+    \item A list of data product files with description, status, size and a cyclic redundancy check (CRC) for error detection
+    \item Associated IVOA ObsCore attributes used for querying astronomical observations
+\end{itemize}
+
+This implementation is distributed as a python package and facilitates the manual addition of the required metadata to a YAML file. 
+Further information on the type of metadata included by this generator can be found here \href{https://confluence.skatelescope.org/pages/viewpage.action?spaceKey=SWSI&title=ADR-55+Definition+of+metadata+for+data+management+at+AA0.5}{here}
+
+\subsubsection{ska-sdp-metadata-generator}
+
+Additionally, the ska-sdp-metadata-generator\footnote{\url{https://gitlab.com/ska-telescope/sdp/ska-sdp-metadata-generator}} may be used to retroactively create metadata from data products, predominantly metadata which describes observing conditions.
+The returned metadata is in the same YAML format as with the aforementioned generator. 
+
+\subsubsection{Rucio IVOA Integration}
+
+\subsection{What work CADC (SRCNet) did so far with regards to CAOM}
+
+\subsection{IVOA Protocol}
+
+\subsection{LSST DM}
