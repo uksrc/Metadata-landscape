@@ -1,6 +1,74 @@
 \section{Existing Metadata Standards and Systems}\label{sec:exist_mod}
+
+Although commonly thought of as a file format, \href{https://fits.gsfc.nasa.gov}{FITS (Flexible Image Transport System)} does contain a large amount of metadata and indeed some metadata models within the basic format definition and its extensions. FITS dates from the early 1980s, when the concept of re-usability and interoperability was limited to the extent of being able to understand the content of the file once it was in your possession. There was no obvious need to separate out the metadata as this pre-dated the ability to search for information on a global basis that was enabled by the advent of the world wide web. The influence of FITS and some associated standards such as \href{https://fits.gsfc.nasa.gov/fits_wcs.html}{WCS (World Coordinate Systems)} can be seen in the development of later metadata models.
+
+By the early 2000s it was clear that many opportunities for interoperability that WWW allowed would benefit from some coordination and the \href{https://www.ivoa.net}{IVOA (International Virtual Observatory Alliance} was formed.
+
+
+
+
 \textcolor{cyan}{Somewhere in this section, does Rucio need its own subsection as it may generate metadata regarding resource distribution/allocation/management?  
 }
+
+
+\subsection{IVOA Data Models}
+
+Metadata model development within the IVOA is managed by the \href{https://wiki.ivoa.net/twiki/bin/view/IVOA/IvoaDataModel}{Data Model Working Group}, and there have been several efforts to develop models that cover many sub-domains of astronomy, and over the years there has been some reworking of some early models - however in general the models are not fully normalized as there are several areas of overlap between models. In this context it is also worth nothing that the \href{https://wiki.ivoa.net/twiki/bin/view/IVOA/IvoaResReg}{IVOA registry} is also a rich repository of metadata with its own set of metadata models. Indeed the \href{https://wiki.ivoa.net/twiki/bin/view/IVOA/IvoaSemantics}{Semantics WG} manages vocabularies which have  a strong relationship with metadata models.
+
+
+It should be noted in the context of the SKA that the original design of IVOA data models was driven by 
+\begin{itemize}
+    \item finding a common set of metadata across many observatories.
+    \item a rather optical-centric view of astronomy.
+    \item a paradigm where the ultimate object of the system was to "download" data to the astronomer's laptop. 
+\end{itemize}
+
+\subsubsection{VO-DML}
+It was realised within the Data Model WG that interoperability and consistency of data models themselves was sub-optimal because the data models' descriptions existed only in document form, and that this situation could be improved if there were a machine-readable description. To this end \href{https://www.ivoa.net/documents/VODML/}{VO-DML} was created to provide a uniform language for defining data models which would allow a consistent definition and reuse of one model by another. The \href{https://www.ivoa.net/documents/VODML/}{VO-DML} standard document is a rather obtuse read, as it describes in detail the meta-model of the description language and does not offer much practical guidance on its use. There is however, an associated set of \href{https://ivoa.github.io/vo-dml/}{VO-DML tools}
+that ease the creation of the models and perform document, schema and code generation from the models.
+
+
+
+\subsubsection{IVOA ObsCore}
+
+ObsCore is similar to the CAOM in that it defines an ontology for the metadata of observational data. 
+The ObsCcore model was designed with a one-size-fits-all appraoch to metadata modelling with the aim of having observational data from telescopes across the electromagnetic spectrum searchable via a singular set of services.
+The table access protocol (TAP) service provides a mapping of the ObsCore data model to SQL, such that it may be stored and queried over within a relational database. 
+To query over these data, the IVOA provides a modified version of SQL - the astronomical data query language (ADQL). 
+Post-query, the data may then be downloaded via the provided data access layer (DAL).
+
+\subsubsection{IVOA PROV-DM}
+
+The IVOA provenance model is a PROV extension designed for astronomical provenance.
+It takes the three core concepts of PROV (activity, entity, and agent) as well as the main interactions between these objects (wasAssociatedWith Used, wasGeneratedBy, wasAttributedTo).
+In addition, the IVOA model introduces two new classes of object - Parameter and ConfigFile. 
+Another set of additions within this model are the idea of description classes for each of the aforementioned classes i.e. EntityDescription, ParameterDescription, etc., and relations which connect these descriptions to the appropriate objects.
+The value of an entity has also been changed within the IVOA provenance model to be an entity separate from the entity it is a value for and exists in its class of either ValueEntity or DatasetEntity, depending on the type of value.
+As with the previous classes, each have an associated description class. 
+
+
+% However, the IVOA provenance model is creating an extension to accommodate the kind of metadata required by radio astronomical applications \footnote{\url{https://github.com/ivoa-std/ObsCoreExtensionForRadioData/releases/download/auto-pdf-preview/ObsCoreExtensionForRadioData-draft.pdf}}.
+\subsubsection{IVOA ObsCore Extension For Radio Data}
+    
+The IVOA ObsCore Extension For Radio Data\footnote{\url{https://github.com/ivoa-std/ObsCoreExtensionForRadioData}} is being created as an extension to accommodate the kind of metadata required by radio astronomical applications .  The url referenced herein is currently a Work-In-Progress, and should be replaced by a reference to the offical IVOA protocol once available.  This Extension is in active development, and there is scope for SRCNet to influence how it is implemented.
+
+\subsection{Common Archive Observation Model}
+
+The Common Archive Observation Model (CAOM) is a data model which aims to standardise metadata and provenance that describe; the observations, data products, and physical artefacts. The goal of which being the ability to access many archives using the same set of software. The model itself is use-case-driven, with the use cases being centred around data retrieval when given certain observational constraints e.g. all images within x/y RA/DEC. 
+
+The ontology of CAOM defines naming conventions for different aspects of observation and data processing, as well as how to link them with each other. The values of theses aspects are to be described within the ranges defined by the model. The ranges themselves are those defined within the vodml (e.g. ivoa:string). 
+
+There is also a repository of CAOM software to be used in tandem with data formed in accordance with the data model. These include: \href{https://github.com/opencadc/caom2/tree/master/caom2-viz}{caom2-viz} a visualisation tool for the results of queries; \href{https://github.com/opencadc/caom2/tree/master/caom2-validator}{caom2-validator} a validator for input metadata; \href{https://github.com/opencadc/caom2/tree/master/fits2caom2}{fits2caom2} a command line tool for creation of a CAOM observation from an input fits file. 
+
+
+%Moved to Discussion/Coclusion section.... If a DB/DM system could incorporate IVOA language and metadata into the nascent DB for SRCNet/SKAO/SKA Pathfinders in such a way that a View could be generated for use by IVOA tools, IVOA could hypothetically be used alongside any other non-IVOA metadata that SRCNet needs.  Regardless, all SRCNet would need to agree on the same DB structure/nomenclature/identifiers, and there could be scope in the future for any non-IVOA components to be adopted into the IVOA to strengthen interoperability with other future projects such as the ngVLA.
+
+\subsection{LSST DM}
+%Awaiting information from George Beckett???
+% add quick section describing the choice of dm and database, then explain the method for transforming it to a graph DB and querying as a graph. Link to the example on github (also upload this to github). 
+%** Does this comment/to-do item belong in conclusion?? Or in Section 5?  Also, Please link me to this example? Thanks --ebb
+
+
 \subsection{SKA Provenance and Metadata Implementations}
 
 \subsubsection{SDP Data Product Metadata Generator}
@@ -28,43 +96,3 @@ The returned metadata is in the same YAML format as with the aforementioned gene
 
 Rucio IVOA integration documentation\footnote{\url{https://gitlab.com/ska-telescope/src/ska-rucio-ivoa-integration}} 
 is available in the SKAO's SRC gitlab, where instructions are given for one to use either the CDS TAP Library to sync (basically upsert) onto Rucio, or use DaCHS library to make a table under the Rucio schema from which an IVOA Obscore view can be called.
-
-\subsection{What work CADC (SRCNet) did so far with regards to CAOM}
-
-\subsection{Common Archive Observation Model}
-
-The Common Archive Observation Model (CAOM) is a data model which aims to standardise metadata and provenance that describe; the observations, data products, and physical artefacts. The goal of which being the ability to access many archives using the same set of software. The model itself is use-case-driven, with the use cases being centred around data retrieval when given certain observational constraints e.g. all images within x/y RA/DEC. 
-
-The ontology of CAOM defines naming conventions for different aspects of observation and data processing, as well as how to link them with each other. The values of theses aspects are to be described within the ranges defined by the model. The ranges themselves are those defined within the vodml (e.g. ivoa:string). 
-
-There is also a repository of CAOM software to be used in tandem with data formed in accordance with the data model. These include: \href{https://github.com/opencadc/caom2/tree/master/caom2-viz}{caom2-viz} a visualisation tool for the results of queries; \href{https://github.com/opencadc/caom2/tree/master/caom2-validator}{caom2-validator} a validator for input metadata; \href{https://github.com/opencadc/caom2/tree/master/fits2caom2}{fits2caom2} a command line tool for creation of a CAOM observation from an input fits file. 
-
-\subsection{IVOA Protocol}
-
-\subsubsection{IVOA ObsCore}
-    
-\subsubsection{IVOA PROV-DM}
-
-The IVOA provenance model is a PROV extension designed for astronomical provenance.
-It takes the three core concepts of PROV (activity, entity, and agent) as well as the main interactions between these objects (wasAssociatedWith Used, wasGeneratedBy, wasAttributedTo).
-In addition, the IVOA model introduces two new classes of object - Parameter and ConfigFile. 
-Another set of additions within this model are the idea of description classes for each of the aforementioned classes i.e. EntityDescription, ParameterDescription, etc., and relations which connect these descriptions to the appropriate objects.
-The value of an entity has also been changed within the IVOA provenance model to be an entity separate from the entity it is a value for and exists in its class of either ValueEntity or DatasetEntity, depending on the type of value.
-As with the previous classes, each have an associated description class. 
-
-
-% However, the IVOA provenance model is creating an extension to accommodate the kind of metadata required by radio astronomical applications \footnote{\url{https://github.com/ivoa-std/ObsCoreExtensionForRadioData/releases/download/auto-pdf-preview/ObsCoreExtensionForRadioData-draft.pdf}}.
-\\
-    \subsubsection{IVOA ObsCore Extension For Radio Data}
-    
-The IVOA ObsCore Extension For Radio Data\footnote{\url{https://github.com/ivoa-std/ObsCoreExtensionForRadioData/releases/download/auto-pdf-preview/ObsCoreExtensionForRadioData-draft.pdf}} is being created as an extension to accommodate the kind of metadata required by radio astronomical applications .  The url referenced herein is currently a draft, and should be commented out in the release for this Metadata-landscape document, if ObsCore Extension For Radio cannot yet be replaced by an IVOA-sanctioned version.  This Extension is in active development, and SRCNet could influence what is included.
-    \\
-
-\\
-\\
-%Moved to Discussion/Coclusion section.... If a DB/DM system could incorporate IVOA language and metadata into the nascent DB for SRCNet/SKAO/SKA Pathfinders in such a way that a View could be generated for use by IVOA tools, IVOA could hypothetically be used alongside any other non-IVOA metadata that SRCNet needs.  Regardless, all SRCNet would need to agree on the same DB structure/nomenclature/identifiers, and there could be scope in the future for any non-IVOA components to be adopted into the IVOA to strengthen interoperability with other future projects such as the ngVLA.
-
-\subsection{LSST DM}
-
-% add quick section describing the choice of dm and database, then explain the method for transforming it to a graph DB and querying as a graph. Link to the example on github (also upload this to github). 
-%** Does this comment/to-do item belong in conclusion?? Or in Section 5?  Also, Please link me to this example? Thanks --ebb

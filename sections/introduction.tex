@@ -1,5 +1,15 @@
 \section{Introduction}\label{sec:intro}
 
-Describing the current state of metadata mapping to data access. Explain the differences in approach in CAOM and ObsCommon
-
 KR: The initial draft of the vision document of the current practice and proposals for modifications. In the future PI can be presented to and agreed by UKSRC and SRCNet architecture teams.
+
+
+Metadata is data that describes other data - in general it facilitates finding and working with particular instances of the data. This document examines some existing approaches to metadata design that have been used in the general astronomy domain, with a view to making recommendations for the metadata data model to be used within SRCNet.
+
+Metadata is a crucial building block in making a FAIR system;
+\begin{itemize}
+    \item \textbf{Findable} - the metadata model enables an astronomer to understand the relationships between different parts of the data at to be able to build queries.
+    \item \textbf{Accessible} - Common metadata models can facilitate the creation of clients that can understand how to work with diverse datasets.
+    \item \textbf{Interoperable} - Metadata models can allow mappings to be made between different datasets.
+    \item \textbf{Reusable} - Metadata models can assist in being sure that code that operates on data will behave in the same way in different operating environments. In particular it can aid in understanding the provenance of a dataset and the preceding operations that have been performed on it. 
+    
+\end{itemize}
