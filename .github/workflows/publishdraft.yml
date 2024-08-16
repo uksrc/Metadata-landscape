@@ -26,20 +26,13 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-      - name: pdflatex main
-        uses: dante-ev/latex-action@latest
-        with:
-          root_file: main.tex
-          compiler: pdflatex
-          args: -interaction=nonstopmode -shell-escape
-      - name: bibtex main
-        uses: dante-ev/latex-action@latest
-        with:
-          root_file: main.aux
-          compiler: bibtex
-      - name: pdflatex main
-        uses: dante-ev/latex-action@latest
-        with:
-          root_file: main.tex
-          compiler: pdflatex
-          args: -interaction=nonstopmode -shell-escape
+      - name: Setup dependencies
+        run: |
+         sudo apt update
+         sudo apt install texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended xsltproc latexmk cm-super imagemagick graphviz librsvg2-bin
+         sudo snap install pdftk
+
+      - name: Build Document
+        run:|
+         pdflatex main.tex
+            
