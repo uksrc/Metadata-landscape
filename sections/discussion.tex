@@ -5,23 +5,3 @@ If a DB/DM system could incorporate IVOA language and metadata into the nascent 
 However, one issue with conversion to different models is information loss. 
 If there is no analogous component defined within the model with which the data is to be converted, then that information is necessarily excluded from the converted dataset. 
 
-% \subsubsection{Caveats to IVOA Protocol}
-
-% Discussion on problems with modelling information within IVOA (primarily or after conversion) that do not have an analogous representation within the model. Will link together in future
-
-% The attributes of the IVOA provenance model also function differently from that within PROV.
-% Within PROV, these are left as ``points of extensibility'', whereby the user may add any application-specific attribute-value pairs. 
-% However, in the IVOA model, one of their requirements is that ``Provenance data model classes and attributes should make use of existing IVOA standards'' \citep{servillat2020ivoa}.
-% Therefore, for each class the only available attributes to add are those that are predetermined.
-% The IVOA provenance model did acknowledge the extensibility points of the PROV-DM:
-% \begin{quote}
-%     ``The W3C model already specifies PROV-DM Extensibility Points (section 6 in Belhajjame and B’Far et al.2013) for extending the core model. This allows one to specify additional roles and types for each entity, agent or relation using the attributes prov:type and prov:role.''
-% \end{quote}
-% However as stated, they only included the extensibility for two of the examples used in the PROV-DM, prov:type and prov:role, and do not allow for the creation of new attributes by the user.
-
-% Beyond radio specific metadata, there are also fields lacking within the computational metadata required by the SKA.
-% For instance, the memory consumption of a function is not something that can be properly modelled within the IVOA model and yet is required for many of the use cases stated in this document.
-% In addition, the available attributes for agents are all centred around people: name, email, phone, address. 
-% Within the SKA, much of what will be responsible for the execution of activities will be computers, schedulers, and/or software. 
-% For these types of agent, the important information would not describe their contact details but rather: versions, OS information, user IDs, etc.. 
-% All of the aforementioned problems with the attributes could be solved within the IVOA by re-instating the attribute-value pair as a point-of-extensibility. 
