@@ -13,3 +13,13 @@ Metadata is a crucial building block in making a FAIR system;
     \item \textbf{Reusable} - Metadata models can assist in being sure that code that operates on data will behave in the same way in different operating environments. In particular it can aid in understanding the provenance of a dataset and the preceding operations that have been performed on it. 
     
 \end{itemize}
+
+It should be noted that it is sometimes desirable to have different metadata models for the same data set that are customized to the particular use case. For instance it is often desirable to have a "simpler" metadata model when doing data discovery than when doing archive ingestion management for instance - this is because the typical archive user will not need to concern themselves with the same level of detail that the archive curator will. In this case it often makes implementation easier if the "data discovery" model is a sub-set or a view of the "archive management" data model, but it does not have to be the case.
+
+\subsection{Query Languages}
+
+One of the primary motivations behind using a metadata model is to have a concrete domain against which queries can be expressed and executed so that exact results can be obtained - To make the data findable.
+
+\subsubsection{relational query languages}
+It is common for metadata models to be expressed in a form that can be stored in relational databases. The commonest relational query language is SQL with ADQL being a variant of SQL that is customized to astronomical use cases.
+

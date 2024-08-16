@@ -4,13 +4,6 @@ Although commonly thought of as a file format, \href{https://fits.gsfc.nasa.gov}
 
 By the early 2000s it was clear that many opportunities for interoperability that WWW allowed would benefit from some coordination and the \href{https://www.ivoa.net}{IVOA (International Virtual Observatory Alliance} was formed.
 
-
-
-
-\textcolor{cyan}{Somewhere in this section, does Rucio need its own subsection as it may generate metadata regarding resource distribution/allocation/management?  
-}
-
-
 \subsection{IVOA Data Models}
 
 Metadata model development within the IVOA is managed by the \href{https://wiki.ivoa.net/twiki/bin/view/IVOA/IvoaDataModel}{Data Model Working Group}, and there have been several efforts to develop models that cover many sub-domains of astronomy, and over the years there has been some reworking of some early models - however in general the models are not fully normalized as there are several areas of overlap between models. In this context it is also worth nothing that the \href{https://wiki.ivoa.net/twiki/bin/view/IVOA/IvoaResReg}{IVOA registry} is also a rich repository of metadata with its own set of metadata models. Indeed the \href{https://wiki.ivoa.net/twiki/bin/view/IVOA/IvoaSemantics}{Semantics WG} manages vocabularies which have  a strong relationship with metadata models.
@@ -26,6 +19,8 @@ It should be noted in the context of the SKA that the original design of IVOA da
 \subsubsection{VO-DML}
 It was realised within the Data Model WG that interoperability and consistency of data models themselves was sub-optimal because the data models' descriptions existed only in document form, and that this situation could be improved if there were a machine-readable description. To this end \href{https://www.ivoa.net/documents/VODML/}{VO-DML} was created to provide a uniform language for defining data models which would allow a consistent definition and reuse of one model by another. The \href{https://www.ivoa.net/documents/VODML/}{VO-DML} standard document is a rather obtuse read, as it describes in detail the meta-model of the description language and does not offer much practical guidance on its use. There is however, an associated set of \href{https://ivoa.github.io/vo-dml/}{VO-DML tools}
 that ease the creation of the models and perform document, schema and code generation from the models.
+
+One of the primary goals of VO-DML was to create models that could easily be stored in a relational database.
 
 
 
@@ -50,17 +45,110 @@ As with the previous classes, each have an associated description class.
 % However, the IVOA provenance model is creating an extension to accommodate the kind of metadata required by radio astronomical applications \footnote{\url{https://github.com/ivoa-std/ObsCoreExtensionForRadioData/releases/download/auto-pdf-preview/ObsCoreExtensionForRadioData-draft.pdf}}.
 \subsubsection{IVOA ObsCore Extension For Radio Data}
     
-The IVOA ObsCore Extension For Radio Data\footnote{\url{https://github.com/ivoa-std/ObsCoreExtensionForRadioData}} is being created as an extension to accommodate the kind of metadata required by radio astronomical applications .  The url referenced herein is currently a Work-In-Progress, and should be replaced by a reference to the offical IVOA protocol once available.  This Extension is in active development, and there is scope for SRCNet to influence how it is implemented.
+The IVOA ObsCore Extension For Radio Data\footnote{\url{https://github.com/ivoa-std/ObsCoreExtensionForRadioData}} is being created as an extension to accommodate the kind of metadata required by radio astronomical applications .  The url referenced herein is currently a Work-In-Progress, and should be replaced by a reference to the offical IVOA protocol once available.  This Extension is in active development, and there is scope for SRCNet to influence how it is implemented.  (Update this section now that it is being implemented with key changes listed/summarised here)
 
 \subsection{Common Archive Observation Model}
 
-The Common Archive Observation Model (CAOM) is a data model which aims to standardise metadata and provenance that describe; the observations, data products, and physical artefacts. The goal of which being the ability to access many archives using the same set of software. The model itself is use-case-driven, with the use cases being centred around data retrieval when given certain observational constraints e.g. all images within x/y RA/DEC. 
+The Common Archive Observation Model (CAOM) is a data model which aims to standardise metadata and provenance that describe; the observations, data products (planes), and physical artefacts. The goal of which being the ability to access many archives using the same set of software. The model itself is use-case-driven, with the use cases being centred around data retrieval when given certain observational constraints e.g. all images within x/y RA/DEC. 
+\\
+\\The ontology of CAOM defines naming conventions for different aspects of observation and data processing, as well as how to link them with each other. The values of these aspects are to be described within the ranges defined by the model. The ranges themselves are those defined within the vodml (e.g. ivoa:string). 
+\\
+\\There is also a repository of CAOM software to be used in tandem with data formed in accordance with the data model. These include: \href{https://github.com/opencadc/caom2/tree/master/caom2-viz}{caom2-viz} a visualisation tool for the results of queries; \href{https://github.com/opencadc/caom2/tree/master/caom2-validator}{caom2-validator} a validator for input metadata; \href{https://github.com/opencadc/caom2/tree/master/fits2caom2}{fits2caom2} a command line tool for creation of a CAOM observation from an input fits file. 
+\\
+\\Expand the above to include experience utilising these software for eMERLIN?  Or... too much detail? 
 
-The ontology of CAOM defines naming conventions for different aspects of observation and data processing, as well as how to link them with each other. The values of theses aspects are to be described within the ranges defined by the model. The ranges themselves are those defined within the vodml (e.g. ivoa:string). 
+\subsubsection{\href{https://confluence.skatelescope.org/display/SRCSC/SP-4397+CAOM-2.5}{CAOM 2.5} Proposed Changes}
+Following the footsteps of the IVOA ObsCore Extension for Radio, the CAOM2.4 is given an upgrade to include metadata objects determined by use cases to be integral to the radio astronomy data discovery path.  Specifically, these components are added: 
+\begin{itemize}
+\item Observation.Telescope.trackingMode
+\item Plane.uv (Visibility) will only be expected when Plane.dataProductType == visibility.  
+\item Plane.uv.distance 
+\item Plane.uv.distributionEccentricity
+\item Plane.uv.distributionFill
+\item Plane.position.minBounds
+\item Plane.position.maxAngularScale
+\item Plane.position.energyDependent??
+\item Plane.energy.resolution
+\item Plane.energy.resolutionBound
+\item Plane.time.exposureBounds
+\end{itemize}
 
-There is also a repository of CAOM software to be used in tandem with data formed in accordance with the data model. These include: \href{https://github.com/opencadc/caom2/tree/master/caom2-viz}{caom2-viz} a visualisation tool for the results of queries; \href{https://github.com/opencadc/caom2/tree/master/caom2-validator}{caom2-validator} a validator for input metadata; \href{https://github.com/opencadc/caom2/tree/master/fits2caom2}{fits2caom2} a command line tool for creation of a CAOM observation from an input fits file. 
+\subsubsection{CAOM Caveats/Considerations for Radio Band}
+Despite the above, optical/IR-biased assumptions remain.  If software accessing these metadata are expecting pixels, and receive channels, will the software yield a value or result that makes sense in the application?  
+\\
+\\For energy-based values, radio astronomers use frequency, with Hertz as the SI unit.  As with IVOA ObsCore, any frequency-based values need to be converted to wavelength, with meters as the SI unit.  The observatory-based collection or archive operator must thus have an understanding of the expected CAOM Data Model range.
+\\
+\\ If the CAOM 2.5 changes are implemented, any non-radio/mm observatories will have additional NULL values in their CAOM databases, which goes against the \textit{Interoperable} component of FAIR data principles.  
+\\
+\\Conversely, the CAOM fields which are only applicable to optical/IR observations remain in the model even after the 2.5 upgrade, presumably for backward compatability.  Thus, radio/submm observatories are left with many NULL values.  
+
+\subsubsection{CAOM Caveats for interferometer/VLBI data products: eMERLIN}
+Mapping an interferometer, specifically an VLBI interferometer comprised of unmatched antennas, provides a glimpse into scalability problems for the CAOM Data Model.
+\\
+\\We attempted to map eMERLIN data products onto the CAOM data model.  Observation.Telescope object range is not defined as zero-to-many but zero-to-one.  As there can only be zero or one telescope, we can let observation.telescope.name as "eMERLIN".  However, Observation.Telescope.geolocationX/Y/Z become problematic.  Shall we ingest the geolocation for the Lovell, or for Knockin, or the Cambridge dish?  For now, we have opted to include "Null" for our geolocation coordinates, and let the included antennas populate the observation.telescope.keyword metadata field. 
+\\
+\\The problem expands when we also attempt to map the Observation.Environment object.  There can only be one Observation.Environment.tau, etc.  While the average tau across a given observation measured at each the MarkII and the Lovell dishes is probably the same, tau might be quite different at the Cambridge dish location .   
+\begin{itemize}
+\item Solution: Leave all of these values as NULL.
+Problem: It is widely considered poor practice to have a relational database table that is almost all NULL values. Storing a record or a table full of records, inserting NULL values for entire tables, and implementing code that processes these is inefficient.
+
+\item Solution: In processing interferometric data, a Reference Antenna is defined for the purpose of phase calibration.  Both the geolocation and weather data from a reference antenna may or may not be useful for an astronomer.  
+Problem:  Depending on the services that access this information, it could be misused/misinterpreted, and either the software or the scientist end-user would need to understand the limitation and subtle implication of this metadata.
+
+\item Solution: Re-define the Observation.Telescope and Observation.Environment objects to allow for more than one object, and tie the Observation.Environment object to the Telescope object using a telescopeID.  
+Problem:  This solution is not scaleable for the future of interferometry.  Applied to eMERLIN and interferometers with similar order of magnitude antenna counts, this works, without impinging on single-dish observatories, as they can just leave off the extra Telescope objects without adding in Nulls.  However, interferometers such as SKAO will have too many elements in the arry for this to make any sense.  Array configuration will be much more important.
+
+\item Solution:  Re-define the Observation.Telescope as an array configuration for interferometers.
+Problem: VLBI interferometers will have to name and define 'array configurations', which include every permutation of which antennas are included.  Additionally, this doesn't solve the Observation.Environment problem.
+
+\item Solution:  Use the Observation.Telescope.instrument metadatum for an array configuration for interferometers such as the SKAO or ALMA.  Continue to use Observation.Telescope.keywords metadata for listing included antennas in a VLBI observation.
+Problem:  Still doesn't solve the Observation.Environment problem.
+
+\item Solution:  Ingest eMERLIN metadata into CAOM Planes and Artefacts, and not into CAOM Observations.  I'm not sure this is feasible, as a Plane is a data product of an Observation; where CAOM Observation is defined as a "single top-level entry in an astronomy data centre"\footnote{\url{https://www.opencadc.org/caom2/\#Observation}}.
+\end{itemize}
+
+When modeling non-measurement-set Data Products such as plots and images into the CAOM Artifact Class, more problems arise in the difference between an optical single dish data product and an interferometric data product, despite these products having a fits format at this level.  An interferometric uv-plot, or residual image are not part of the Artifact.ProductType "Vocabulary", whereas 'Science', 'Dark', 'Flat' are all included.  Interferometers are left using more general descriptors, such as \textit{ProductType.auxiliary "related field"}. See section 4.3.6 The Part/Chunk Problem for further discussion on the data collection method differences between radio interferometry and optical imaging, and problems that continue to arise from these differences. 
+
+\subsubsection{CAOM Caveats for a 21st Century Data Product Format: Measurement Set 2.0}
+With the ALMA Observatory coming online, we now have the Measurement Set as the standard data product format for radio/millimeter interferometer data processed with CASA tools.  Though CASA will be eventually superceded by an SKAO-inspired toolkit, it remains our current tool for interferometric data processing.  
+\\
+\\The CAOM data model was created to describe FITS data products, rather than measurement sets.  While the FITS header metadata may correlate 1:1 quite smoothly with the CAOM model, the use-case of an eMERLIN measurement set does not.  Will the SKAO data product measurement sets be more closely aligned with CAOM descriptions?   We can look to ALMA as a segue into the future of interferometric radio/submm astronomy.
+
+\subsubsection{Ancillary Targets in the CAOM}
+
+The CAOM models the target object for any particular object. 
+The aforementioned target can be assigned attributes such as name, locations, redshift etc. 
+This suitably models the main target contained within measurement sets, however, the caom does not have the ability to model ancillary targets.
+These may include things such as calibrators for flux, pointing, or phase. 
+
+This problem is further exacerbated by the different between how optical and radio data handle calibration.
+Within optical, the calibration objects such as flats, darks, etc. can be easily modelled as individual images, separate from the target image to be considered the "science" product in the CAOM model.
+Within the e-Merlin pipeline however, there is not the clear distinction on the data product level. 
+Calibration products do not exist as separate measurement sets to be modelled in the same way as flat field images.
+Rather, the output of the e-Merlin pipeline contains the impact of the chosen calibrators and a reference to their names and purposes. 
+Properly modelling these within the CAOM may require linking the auxiliary data products to their representation at an earlier stage in processing(?). 
+The names of the auxiliary data products could be added as separate artifacts to an observation, however without a working artifact uri I expect this will fail. 
+
+\subsubsection{The Part/Chunk Problem}
+
+The CAOM model states that:
+
+\begin{quote}
+    Data access is supported by the Artifact class and, for more specialised cases, the Part and Chunk classes. Artifacts are stored data objects (usually files). The structure of an artifact is described by it part(s) and the data content of the a part is described by one or more chunk(s). The current model allows for a linear sequence of named parts within an artifact; this works for some aggregations (e.g. flat tar or zip files) and linear data file formats (e.g. FITS) but is not well-suited to hierarchical structures (e.g. directory structures, HDF). A chunk is able to describe astronomical data arrays (e.g. spectra, images, cubes), but cannot describe arbitrary data structures like lists of data objects or tabular data. 
+\end{quote}
+
+As the Part/Chunk classes are not suitable for directories or tablular data, they are not applicable within measurement sets.
+Here rises a potential issue, how do we model the information which is typically applied to Part or Chunk classes.
+Information such are temporal, spatial, and polarisation metadata are handled within the Chunk class.
+This issue can be circumvented within the model itself as these data can also be applied within the Plane class. 
+However, the CAOM codebase contains a list of allowed elements which can be used within an observation (\_CAOM\_ELEMENTS within blueprints.py \footnote{\url{https://github.com/opencadc/caom2tools/blob/main/caom2utils/caom2utils/blueprints.py}}) and the elements required to include the temporal, spatial, or polarisation data are not included amoungst them.
+It is currently unclear how relevant this is, though it may fail some validator checks when uploading the data via caom2repo\footnote{\url{https://github.com/opencadc/caom2tools/tree/main/caom2repo}}.
 
 
+\subsection{ALMA: A Functional Example}
+While ALMA is not an official Pathfinder or Precursor for SKAO, the project provides much that the current Pathfinders or Precursors do not. 
+Namely, data products which are measurement sets, CASA for data processing, an already-large queryable data archive, a network of regional centres (ARCs) with identical front-end science portals, implementation of IVOA tools, and alleged implementation into the CADC (and thus a coordination with CAOM).  A valuable step could be to find documentation or evidence of how ALMA data products are manifested in both CADC (and thus CAOM-model-inspired) tools, and IVOA-ObsCore-based tools. 
+\par
 %Moved to Discussion/Coclusion section.... If a DB/DM system could incorporate IVOA language and metadata into the nascent DB for SRCNet/SKAO/SKA Pathfinders in such a way that a View could be generated for use by IVOA tools, IVOA could hypothetically be used alongside any other non-IVOA metadata that SRCNet needs.  Regardless, all SRCNet would need to agree on the same DB structure/nomenclature/identifiers, and there could be scope in the future for any non-IVOA components to be adopted into the IVOA to strengthen interoperability with other future projects such as the ngVLA.
 
 \subsection{LSST DM}
