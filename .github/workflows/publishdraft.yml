@@ -33,6 +33,6 @@ jobs:
          sudo snap install pdftk
 
       - name: Build Document
-        run:|
+        run: |
          pdflatex main.tex
             
