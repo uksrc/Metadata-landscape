@@ -141,14 +141,36 @@ As the Part/Chunk classes are not suitable for directories or tablular data, the
 Here rises a potential issue, how do we model the information which is typically applied to Part or Chunk classes.
 Information such are temporal, spatial, and polarisation metadata are handled within the Chunk class.
 This issue can be circumvented within the model itself as these data can also be applied within the Plane class. 
-However, the CAOM codebase contains a list of allowed elements which can be used within an observation (\_CAOM\_ELEMENTS within blueprints.py \footnote{\url{https://github.com/opencadc/caom2tools/blob/main/caom2utils/caom2utils/blueprints.py}}) and the elements required to include the temporal, spatial, or polarisation data are not included amoungst them.
-It is currently unclear how relevant this is, though it may fail some validator checks when uploading the data via caom2repo\footnote{\url{https://github.com/opencadc/caom2tools/tree/main/caom2repo}}.
+However, the CAOM codebase contains a list of allowed elements which can be used within an observation (\_CAOM\_ELEMENTS within blueprints.py \footnote{\url{https://github.com/opencadc/caom2tools/blob/main/caom2utils/caom2utils/blueprints.py}}) and the elements required to include the energy, temporal, spatial, or polarisation data are not included amongst them.
+It is currently unclear how relevant this is, though it may fail some validator checks when uploading the data via caom2repo\footnote{\url{https://github.com/opencadc/caom2tools/tree/main/caom2repo}}. \\
+\\**As an update, the codebase is not even set up to process large swathes of the metadata elements into just the XML file, let alone whether they would pass checks to upload into the database itself. One possible solution is to treat a whole measurement set as one single chunk within a single part within a single plane, and thus apply the relevant energy, temporal, spatial, and polarization metadata to the plane and observation.    
 
 
 \subsection{ALMA: A Functional Example}
 While ALMA is not an official Pathfinder or Precursor for SKAO, the project provides much that the current Pathfinders or Precursors do not. 
-Namely, data products which are measurement sets, CASA for data processing, an already-large queryable data archive, a network of regional centres (ARCs) with identical front-end science portals, implementation of IVOA tools, and alleged implementation into the CADC (and thus a coordination with CAOM).  A valuable step could be to find documentation or evidence of how ALMA data products are manifested in both CADC (and thus CAOM-model-inspired) tools, and IVOA-ObsCore-based tools. 
-\par
+Namely, data products which are measurement sets, CASA for data processing, an already-large queryable data archive, a network of regional centres (ARCs) with identical user-end science portals, implementation of IVOA tools, and alleged implementation into the CADC (and thus a coordination with CAOM).  A valuable step could be to find documentation or evidence of how ALMA data products are manifested in both CADC (and thus CAOM-model-inspired) tools, and IVOA-ObsCore-based tools. \\
+\subsubsection{ALMA Archive Summary relevant to eMERLIN/SKAO-pathfinder}
+ALMA data metadata are collected from ALMA raw data (known as ASDM format) into an XML database (observatory-level AFA), which is not searchable but very thorough.   The metadata then get harvested into an SQL relational database (ARC-level ASA) for the science portal/query interface, and then as a more recent step, there is now a NoSQL DB layer for particularly fast/elastic searches.  Typical queries in the science portal are along position, energy, time and polarization axes.  More advanced queries involve object-type, similar projects or publications based on text matching *Include ref to ALMA documentation here*.
+See Table at end of document.
+\\
+ALMA initially looked into CAOM as a science data model but decided against using it due to too much complexity in some facets, and other components being missing entirely that the observatory needed at the time.  
+\\
+Due to products not being consistently complete, and the desire to avoid Null values in tables (thus rendering tables unsearchable), the ALMA metadata are all collected from raw data and denormalised to produce \textit{what appears like data product metadata} instead of raw. \\
+\\
+If possible, collecting data product metadata reliably from data products rather than raw data is highly recommended.  However, raw data are the source of truth, and if we are using CASA outputs as our source of metadata, we must have a thorough understanding of the implications of what that will mean for any users/use cases.   \\  
+\\
+From conversation: Calculations such as sensitivity are done in this conversion, based on baseline length, etc.  The data products which also yield actual sensitivity for that product for example, are an additional value tied to that product, where the metadata element for sensitivity calculated from raw data would be "predicted" and available alongside the product sensitivity achieved in producing said product.  \\
+\\
+Another example would be water vapour, which may change across an observation, or at different antenna sites, and decisions would have to be made on how to average this in a meaningful way for this data set.  Whether that is the mean, median across sites/days/hours, or min, or max, depends on how water vapour will be used, and thus the decision can be use-case driven.\\
+\\
+Each radio interferometry observation is comprised of many scans, and so the concept of "integration time" must also be calculated from raw data metadata in a meaningful way by the code interfacing the observatory-level database and the user-facing database query tools.  These are just a few examples of how raw data are 'flattened' into the product-like metadata queriable picture seen by the science portal end-user.  
+
+\subsubsection{ALMA Dynamic Archive Rebuild Schedule}
+As an aside, the metadata database component of the ALMA Science Archive is rebuilt every couple of months, or whenever there is a new release of data model.  If a new column is added to a table for example, instead of just adding the column, the whole schema is regenerated, the relational database tables are dropped and then rebuilt.  This ensures a robust metadata archive.  As a clarification, the actual data product artifacts are not re-ingested/reprocessed to storage on this schedule, just the metadata and model.
+\\
+The ALMA science portal query tool doesn't involve any weather/conditions components aside from water vapour, which is quite different than CAOM, which has several weather elements.  
+
+
 %Moved to Discussion/Coclusion section.... If a DB/DM system could incorporate IVOA language and metadata into the nascent DB for SRCNet/SKAO/SKA Pathfinders in such a way that a View could be generated for use by IVOA tools, IVOA could hypothetically be used alongside any other non-IVOA metadata that SRCNet needs.  Regardless, all SRCNet would need to agree on the same DB structure/nomenclature/identifiers, and there could be scope in the future for any non-IVOA components to be adopted into the IVOA to strengthen interoperability with other future projects such as the ngVLA.
 
 \subsection{LSST DM}
